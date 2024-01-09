@@ -1,0 +1,18 @@
+{
+    "name": "Random Password Generator",
+    "description": "A random password generator extention",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "actions":{
+        "default_popup": "popup.html"
+    }
+    "icons":{
+        "16": "images/appIcon_16.png",
+        "32": "images/appIcon_32.png",
+        "48": "images/appIcon_48.png",
+        "64": "images/appIcon_64.png"
+    }
+}

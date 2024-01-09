@@ -111,6 +111,34 @@ allCheckBox.forEach((checkbox) => {
 
 async function copyContent() {
   try {
+    await chrome.tabs.query(
+      { active: true, currentWindow: true },
+      function (tabs) {
+        var activeTab = tabs[0];
+
+        // Inject the generated password into the active tab's password field
+        chrome.scripting.executeScript({
+          target: { tabId: activeTab.id },
+          function: function (password) {
+            // Find the form element
+            var formElement = document.querySelector("form");
+
+            // Find the first input field of type "password" within the form
+            var passwordField = formElement.querySelector(
+              'input[type="password"]'
+            );
+
+            // Set the value of the password field
+            if (passwordField) {
+              passwordField.value = password;
+            } else {
+              console.error("No password field found");
+            }
+          },
+          args: [passwordDisplay.value],
+        });
+      }
+    );
     await navigator.clipboard.writeText(passwordDisplay.value);
     copyMsg.innerText = "copied";
   } catch (e) {
@@ -125,6 +153,19 @@ async function copyContent() {
     copyMsg.classList.remove("active");
   }, 2000);
 }
+
+// to set the value in password field.
+// function copyToPasswordField() {
+//   let passwordField = document.querySelector('input[type="password"]');
+//   console.log("hello");
+
+//   // Set the value of the password field
+//   if (passwordField) {
+//     passwordField.value = passwordDisplay.value;
+//   } else {
+//     console.error("No password field found");
+//   }
+// }
 
 //To shuffle the password
 function shufflePassword(array) {
